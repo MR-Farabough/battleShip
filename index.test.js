@@ -49,3 +49,28 @@ it ('Gamboard.move (FAILURE move)', () => {
     expect(Gameboard().move('ship1', [[2,2], [2,3]]))
     .toBe('MOVE FAILURE')
 })
+
+it ('Checkend method (GAME ON)', () => {
+    expect(Gameboard().checkEnd())
+    .toBe(false)
+})
+
+it ('Checkend method (GAME OVER)', () => {
+    function check() {
+        const shipArr = [
+            Ship(2,1), Ship(3,2), 
+            Ship(3,2), Ship(4,3), 
+            Ship(5,4)]
+        shipArr.forEach(ship => ship.hit())
+        let count = 0
+        let end = 0
+        while (count < shipArr.length) {
+            if (shipArr[count].sunk == true) {
+                end += 1
+            }
+            count++
+        }
+    return end
+    }
+    expect(check()).toBe(5)
+})

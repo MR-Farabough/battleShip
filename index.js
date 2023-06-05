@@ -41,6 +41,17 @@ export function Gameboard() {
         ship5: {
             startCord: [1,6],
             endCord: [1,10]},
+        checkEnd() {
+            let count = 0
+            let end = 0
+            while (count < shipArr.length) {
+                if (shipArr[count].sunk == true ) {
+                    return end += 1
+                }
+                count++
+            }
+            return end == 5 ? true : false
+        },
         checkSpotAvailablity(endCordOne, endCordTwo) {
             let count = 1
             let checkAvailable = true
@@ -112,4 +123,19 @@ export function Gameboard() {
         }
     }
     return obj
+}
+
+const player = Gameboard()
+const bot = Gameboard
+let turn = 'player'
+switch (turn) {
+    case 'player':
+        player.checkEnd()
+        turn = 'bot'
+        break;
+
+    case 'bot':
+        bot.checkEnd()
+        turn = 'player'
+        break;
 }
