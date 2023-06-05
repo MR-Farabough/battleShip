@@ -3,92 +3,113 @@ export function Ship(length, timesHit = 0, sunk = false) {
         length,
         timesHit,
         sunk,
-        hit(isSunk = timesHit + 1 < this.length ? false : true) {
-            if (!isSunk) return this.timesHit + 1
-            //TODO handle a sunk ship
+        isSunk() {
+            return this.timesHit + 1 === this.length
+        },
+        hit() {
+            if (!this.isSunk()) {
+                this.timesHit += 1
+                return this
+            }
+            this.timesHit += 1,
+            this.sunk = true
+            return 'SUNK'
         }
     }
 }
 
 export function Gameboard() {
-    const ship1 = Ship(2)
-    const ship2 = Ship(3)
-    const ship3 = Ship(3)
-    const ship4 = Ship(4)
-    const ship5 = Ship(5)
+    const shipArr = [Ship(2),Ship(3),Ship(3),Ship(4),Ship(5)]
     const obj = {
         missedShots: [],
         ship1: {
             startCord: [1,1],
-            endCord: [2,1]},
+            endCord: [1,2]},
 
         ship2: {
-            startCord: [3,2],
-            endCord: [5,2]},
+            startCord: [2,3],
+            endCord: [2,5]},
 
         ship3: {
-            startCord: [4,3],
-            endCord: [6,3]},
+            startCord: [3,4],
+            endCord: [3,6]},
 
         ship4: {
-            startCord: [8,1],
-            endCord: [8,4]},
+            startCord: [1,8],
+            endCord: [4,8]},
 
         ship5: {
-            startCord: [1,5],
+            startCord: [1,6],
             endCord: [1,10]},
-        // checkSpotAvailablity(newCord = [endCordOne, endCordTwo]) {
-        //     let count = 1
-        //     while (count < 6) {
-        //         const startCord = this[`ship${count}`].startCord
-        //         const endCord = this[`ship${count}`].endCord
-        //         const levelCheck = startCord[1] == endCord[1]
-        //         const columnCheck = startCord[0] == endCord[0]
-        //         if (levelCheck) {
-        //             count++
-        //             console.log('Row Check',startCord, endCord)
-        //             //TODO Check Row
-        //         }
-        //         if (columnCheck) {
-        //             count++
-        //             console.log('Column Check', startCord, endCord)
-        //             //TODO Check Column 
-        //         } else {count++}
-        //     }
-        // },
+        checkSpotAvailablity(endCordOne, endCordTwo) {
+            let count = 1
+            let checkAvailable = true
+            while (count < 6) {
+                const shipStart = this[`ship${count}`].startCord
+                const shipEnd = this[`ship${count}`].endCord
+                const shipLevelCheck = shipStart[0] == shipEnd[0]
+                const shipColumnCheck = shipStart[1] == shipEnd[1]
+                const newCordLevelCheck = endCordOne[0] == endCordTwo[0]
+                const newCordColumnCheck = endCordOne[1] == endCordTwo[1]
+                if (shipLevelCheck) {
+                    if (newCordColumnCheck && endCordOne[1] == shipStart[1]) {
+                        checkAvailable = false
+                    }
+                    if (newCordLevelCheck && endCordOne[0] == shipStart[0]) {
+                        checkAvailable = false
+                    }
+                } else if (shipColumnCheck) {
+                    if (newCordColumnCheck && shipEnd[0] >= endCordOne[0]) {
+                        checkAvailable = false
+                    }
+                    if (newCordLevelCheck && shipEnd[1] >= endCordOne[1]) {
+                        checkAvailable = false
+                    }
+                }
+                count++
+            }
+            return checkAvailable == false ? false : true
+        },
         receiveAttack(cord) {
-            //TODO Updated 'hit' return
             let count = 1
             while (count < 6) {
                 const start = this[`ship${count}`].startCord
                 const end = this[`ship${count}`].endCord
-                const levelCheck = start[1] == end[1]
-                const columnCheck = start[0] == end[0]
-                if (levelCheck && cord[1] == end[1]) {
-                    count++
-                    if (start[0] <= cord[0] && cord[0] <= end[0]) {
-                        return 'HIT'
-                    }
-                } else if (columnCheck && cord[0] == end[0]) {
-                    count++
+                const levelCheck = start[0] == end[0]
+                const columnCheck = start[1] == end[1]
+                if (levelCheck && cord[0] == end[0]) {
                     if (start[1] <= cord[1] && cord[1] <= end[1]) {
-                        return 'HIT'
+                        if (shipArr[count - 1].hit() == 'SUNK') {
+                            this[`ship${count}`].startCord = null
+                            this[`ship${count}`].endCord = null
+                        } else {
+                            shipArr[count - 1] = shipArr[count - 1].hit()
+                            return 'HIT'
+                        }
                     }
-                } 
-                else {
-                    count++
+                } else if (columnCheck && cord[1] == end[1]) {
+                    if (start[0] <= cord[0] && cord[0] <= end[0]) {
+                        if (shipArr[count - 1].hit() == 'SUNK') {
+                            this[`ship${count}`].startCord = null
+                            this[`ship${count}`].endCord = null
+                        } else {
+                            shipArr[count - 1] = shipArr[count - 1].hit()
+                            return 'HIT'
+                        }
+                    }
                 }
+                count++
                 if (count == 6) {
                     this.missedShots.push(cord)
-                    return this.missedShots
+                    return 'MISS'
                 }
             }
         },
-        // move(ship, [endCordOne, endCordTwo]) {
-        //     this.checkSpotAvailablity(ship, endCordOne, endCordTwo)
-        //     //TODO Change the ships Cordinates if available. else null
-        //     //TODO Write test case for ship movement => outcome
-        // }
+        move(ship, [endCordOne, endCordTwo]) {
+            if (!this.checkSpotAvailablity(endCordOne, endCordTwo)) return 'MOVE FAILURE'
+            this[ship].startCord = endCordOne
+            this[ship].endCord = endCordTwo
+        }
     }
     return obj
 }
