@@ -1,0 +1,15 @@
+.game-boards {
+    display: flex;
+    justify-content: space-around;
+}
+
+.card {
+    background:
+        linear-gradient(to right, rgb(213, 207, 207), transparent),
+        linear-gradient(to top, rgb(107, 107, 127), transparent);
+    background-blend-mode: screen;
+    border-radius: 15px;
+    min-width: 20px;
+    width: 40vw;
+    height: 60vh;
+}

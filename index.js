@@ -131,11 +131,22 @@ let turn = 'player'
 switch (turn) {
     case 'player':
         player.checkEnd()
+        // Wait for player input if game over is false
+        //TODO Need to get input on board. 
+            // Just use a basic one for now
+        //TODO Check input is not already used
+
         turn = 'bot'
         break;
 
     case 'bot':
         bot.checkEnd()
+        // Get bot input if game over is false
+        botInput
         turn = 'player'
         break;
+}
+
+function botInput() {
+
 }
