@@ -68,7 +68,6 @@ function createBoard(cardEl) {
 
 createBoard(playerCard)
 playBTN.addEventListener('click', () => {
-    console.log('test')
     playBTN.remove()
     createBoard(botCard)
 })
