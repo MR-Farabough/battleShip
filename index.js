@@ -44,8 +44,10 @@ function createBoard(cardEl) {
         let count = 0
         while(count < 100) {
             const div = createDiv()
-            div.style.height = '50px'
-            div.style.width = '50px'
+            div.style.height = '9%'
+            div.style.width = '9%'
+            div.style.minHeight = '15px'
+            div.style.minWidth = '15px'
             div.style.border = '1px solid black'
             cardEl.append(div)
             count++
