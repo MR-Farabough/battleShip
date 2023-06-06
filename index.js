@@ -32,3 +32,40 @@ colorModeBTN.addEventListener('click', () => {
         colorModeBTN.textContent = 'Dark Mode'
     }
 })
+
+function createBoard(cardEl) {
+    function createDiv() {
+      const newDiv = document.createElement('div')
+      newDiv.setAttribute('class', 'square')
+      return newDiv
+    }
+    
+    function generateSquares() {
+        let count = 0
+        while(count < 100) {
+            const div = createDiv()
+            div.style.height = '50px'
+            div.style.width = '50px'
+            div.style.border = '1px solid black'
+            cardEl.append(div)
+            count++
+        }
+      }
+    generateSquares()
+    const divs = document.querySelectorAll('.square')
+    let count = 0
+    while (count < divs.length) {
+        const divEL = divs[count]
+        divEL.addEventListener('mouseover', () => {
+            divEL.style.cursor = 'pointer'
+        })
+        divEL.addEventListener('click', () => {
+        // check spot // hit square // etc.
+        divEL.style.backgroundColor = 'blue'
+        })
+        count++
+    }
+}
+
+createBoard(playerCard)
+createBoard(botCard)
