@@ -1,15 +1,63 @@
-.game-boards {
-    display: flex;
-    justify-content: space-around;
+body {
+    margin: 0px;
+    background-color: rgb(28, 72, 105);
+    box-sizing: border-box;
 }
 
-.card {
-    background:
-        linear-gradient(to right, rgb(213, 207, 207), transparent),
-        linear-gradient(to top, rgb(107, 107, 127), transparent);
+.game-boards {
+    background-color: rgb(28, 72, 105);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+}
+
+.header {
+    background-color: rgba(128, 128, 128, 0.791);
+    display: flex;
+    justify-content: space-evenly;
+    max-height: 80px;
+}
+
+.card-one,
+.card-two {
     background-blend-mode: screen;
     border-radius: 15px;
-    min-width: 20px;
-    width: 40vw;
-    height: 60vh;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    min-height: 150px;
+    height: 650px;
+    max-height: 70vh;
+    width: 700px;
+    max-width: 50vw;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.card-one {
+    background:
+        linear-gradient(to right bottom, rgb(213, 207, 207), transparent),
+        linear-gradient(to left top, rgb(220, 237, 66), transparent);
+}
+
+.card-two {
+    background:
+        linear-gradient(to right bottom, rgb(213, 207, 207), transparent),
+        linear-gradient(to left top, rgb(237, 92, 66), transparent);
+}
+
+.github-logo {
+    background: white;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    background-color: black;
 }
