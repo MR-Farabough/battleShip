@@ -9,6 +9,7 @@ const player = document.querySelectorAll('.player')
 const footer = document.querySelector('.footer')
 const footerTitle = document.querySelector('.footer-title')
 const githubLogo = document.querySelector('.github-logo')
+const playBTN = document.querySelector('.play')
 const elementArray = [
     colorModeBTN, title,
     gameBoard, playerCard,
@@ -61,13 +62,13 @@ function createBoard(cardEl) {
         divEL.addEventListener('mouseover', () => {
             divEL.style.cursor = 'pointer'
         })
-        divEL.addEventListener('click', () => {
-        // check spot // hit square // etc.
-        divEL.style.backgroundColor = 'blue'
-        })
         count++
     }
 }
 
 createBoard(playerCard)
-createBoard(botCard)
+playBTN.addEventListener('click', () => {
+    console.log('test')
+    playBTN.remove()
+    createBoard(botCard)
+})
