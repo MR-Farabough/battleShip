@@ -19,18 +19,18 @@ const elementArray = [
 
 colorModeBTN.addEventListener('click', () => {
     const nextMode = colorModeBTN.textContent
-    if (nextMode == 'Dark Mode') {
+    if (nextMode == 'Light Mode') {
         elementArray.forEach(element => {
             element.classList.remove('dark')
             element.classList.add('light')
         })
-        colorModeBTN.textContent = 'Light Mode'
+        colorModeBTN.textContent = 'Dark Mode'
     } else {
         elementArray.forEach(element => {
             element.classList.remove('light')
             element.classList.add('dark')
         })
-        colorModeBTN.textContent = 'Dark Mode'
+        colorModeBTN.textContent = 'Light Mode'
     }
 })
 

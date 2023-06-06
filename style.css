@@ -30,10 +30,12 @@ body.dark {
     margin-top: 15px;
 }
 .colorMode.light {
-    background-color: var(--lightModeBackGround);
+    background-color: var(--darkModeBackGround);
+    color: white;
 }
 .colorMode.dark {
-    background-color: var(--darkModeBackGround);
+    background-color: var(--lightModeBackGround);
+    color: black;
 }
 
 .game-boards {
