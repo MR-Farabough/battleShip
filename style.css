@@ -16,6 +16,12 @@ body {
     background-color: var(--lightModeBackGround);
     box-sizing: border-box;
 }
+body.light {
+    background-color: var(--lightModeBackGround);
+}
+body.dark {
+    background-color: var(--darkModeBackGround);
+}
 
 .colorMode {
     margin: 5px;
@@ -23,20 +29,36 @@ body {
     border-radius: 15px;
     margin-top: 15px;
 }
+.colorMode.light {
+    background-color: var(--lightModeBackGround);
+}
+.colorMode.dark {
+    background-color: var(--darkModeBackGround);
+}
 
 .game-boards {
-    background-color: var(--lightModeBackGround);
     display: flex;
     justify-content: space-around;
     align-items: center;
     gap: 15px;
 }
+.game-boards.light {
+    background-color: var(--lightModeBackGround);
+}
+.game-boards.dark {
+    background-color: var(--darkModeBackGround);
+}
 
 .header {
-    background-color: var(--lightModeHeader);
     display: flex;
     justify-content: space-evenly;
     max-height: 80px;
+}
+.header.light {
+    background-color: var(--lightModeHeader);
+}
+.header.dark {
+    background-color: var(--darkModeHeader);
 }
 
 .card-one,
@@ -54,30 +76,71 @@ body {
     margin-left: 15px;
 }
 
-.card-one {
+.text.dark {
+    color: white;
+}
+.text.light {
+    color: black
+}
+
+.player.active {
+    color: yellow;
+}
+.player.deactive {
+    color: black;
+    opacity: 25%;
+}
+
+.card-one.light {
     background:
         linear-gradient(to right bottom, var(--lightModeGrey), transparent),
         linear-gradient(to left top, var(--lightModePlayer), transparent);
 }
+.card-one.dark {
+    background:
+        linear-gradient(to right bottom, var(--darkModeGrey), transparent),
+        linear-gradient(to left top, var(--darkModePlayer), transparent);
+}
 
-.card-two {
+.card-two.light {
     background:
         linear-gradient(to right bottom, var(--lightModeGrey), transparent),
         linear-gradient(to left top, var(--lightModeBot), transparent);
 }
+.card-two.dark {
+    background:
+        linear-gradient(to right bottom, var(--darkModeGrey), transparent),
+        linear-gradient(to left top, var(--darkModeBot), transparent);
+}
 
 .github-logo {
-    background: white;
     height: 50px;
     margin-right: 15px;
+}
+.github-logo.light {
+    background-color: rgb(134, 228, 131);
+}
+.github-logo.dark {
+    background-color: rgb(163, 206, 212);
 }
 
 .footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    color: white;
     display: flex;
     justify-content: center;
+}
+.footer.light {
+    background-color: rgb(200, 189, 189);
+}
+.footer.dark {
     background-color: black;
+}
+
+.footer-title.dark {
+    color: white;
+}
+.foorter-title.light {
+    color: black
 }
