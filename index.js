@@ -67,6 +67,8 @@ function createBoard(cardEl) {
 }
 
 createBoard(playerCard)
+//TODO Render ships in 
+//TODO allow them to be dragged 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
     createBoard(botCard)
