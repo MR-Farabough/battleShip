@@ -1,4 +1,4 @@
-import { Gameboard, Ship } from "./index.js"
+import { Gameboard } from "./index.js"
 
 const colorModeBTN = document.querySelector('.colorMode')
 const header = document.querySelector('.header')
@@ -72,9 +72,9 @@ function createBoard(cardEl) {
 
 function renderShips() {
     const card = Gameboard()
-    let count = 1
-    while (count < 6) {
-        const positionData = card[`ship${count}`]
+    let index = 1
+    while (index < 6) {
+        const positionData = card[`ship${index}`]
         const positisonCords = [positionData.startCord, positionData.endCord];
         const firstSquareSearchEnd = positisonCords[0][0]
         const firstSquareSearchStart = positisonCords[0][1]
@@ -84,17 +84,80 @@ function renderShips() {
         let end = parseInt(`${secondSquareSearchStart - 1}${secondSquareSearchEnd - 1}`)
         squareArray[start].style.backgroundColor = 'blue'
         squareArray[end].style.backgroundColor = 'blue'
-        console.log([start, end])
-        count++
+        const startLength = `${start}`.length
+        const endLength = `${end}`.length
+        let count = 0
+        if (startLength == 1 && endLength == 1) {
+            while (start < end) {
+                squareArray[start].style.backgroundColor = 'blue'
+                start++
+            }
+        } else if (startLength == 1) {
+            const endString = end.toString()
+            const endArray = []
+            count = 0 
+            while (count < 2) {
+                endArray.push(endString[count])
+                count++
+            }
+            let startIndex = endArray.indexOf(start.toString())
+            startIndex == 1 ? startIndex = 0 : null 
+            count = 0
+            while (count < endArray[startIndex]) {
+                squareArray[parseInt(`${count}${start}`)].style.backgroundColor = 'blue'
+                count++
+            }
+        } else if (endLength == 1) {
+            const startString = start.toString()
+            const startArray = []
+            count = 0 
+            while (count < 2) {
+                startArray.push(startString[count])
+                count++
+            }
+            let endIndex = startArray.indexOf(end.toString())
+            endIndex == 1 ? endIndex = 0 : null 
+            count = 0
+            while (count < startArray[endIndex]) {
+                squareArray[parseInt(`${count}${end}`)].style.backgroundColor = 'blue'
+                count++
+            }
+        } else if (startLength == 2 && endLength == 2) {
+            const startString = start.toString()
+            const endString = end.toString()
+            const startArray = []
+            const endArray = []
+            count = 0
+            while (count < 2) {
+                startArray.push(startString[count])
+                endArray.push(endString[count])
+                count++
+            }
+            const firstDigitCheck = startArray[0] == endArray[0]
+            const secondDigitCheck = startArray[1] == endArray[1]
+            if (firstDigitCheck) {
+                let incrementer = startArray[1]
+                while (incrementer < endArray[1]) {
+                    squareArray[parseInt(`${startArray[0]}${incrementer}`)].style.backgroundColor = 'blue'
+                    incrementer++
+                }
+            } else if (secondDigitCheck) {
+                let incrementer = startArray[0]
+                while (incrementer < endArray[0]) {
+                    squareArray[parseInt(`${incrementer}${endArray[1]}`)].style.backgroundColor = 'blue'
+                    incrementer++
+                }
+            }
+        }
+        index++
     }
     return card
 }
 createBoard(playerCard)
-console.log(squareArray);
 const playerBoard = renderShips()
-// const botBoard = renderShips()
 //TODO allow them to be dragged 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
     createBoard(botCard)
+    const botBoard = renderShips()
 })
