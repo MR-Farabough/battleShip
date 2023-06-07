@@ -24,19 +24,19 @@ export function Gameboard() {
         missedShots: [],
         ship1: {
             startCord: [1,1],
-            endCord: [1,2]},
+            endCord: [2,1]},
 
         ship2: {
-            startCord: [2,3],
-            endCord: [2,5]},
+            startCord: [3,2],
+            endCord: [5,2]},
 
         ship3: {
-            startCord: [3,4],
-            endCord: [3,6]},
+            startCord: [4,3],
+            endCord: [6,3]},
 
         ship4: {
-            startCord: [1,8],
-            endCord: [4,8]},
+            startCord: [8,1],
+            endCord: [8,4]},
 
         ship5: {
             startCord: [1,6],

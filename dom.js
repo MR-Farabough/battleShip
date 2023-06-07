@@ -1,4 +1,4 @@
-// import { Gameboard, Ship } from "./app.js"
+import { Gameboard, Ship } from "./index.js"
 
 const colorModeBTN = document.querySelector('.colorMode')
 const header = document.querySelector('.header')
@@ -12,6 +12,7 @@ const footer = document.querySelector('.footer')
 const footerTitle = document.querySelector('.footer-title')
 const githubLogo = document.querySelector('.github-logo')
 const playBTN = document.querySelector('.play')
+const squareArray = []
 const elementArray = [
     colorModeBTN, title,
     gameBoard, playerCard,
@@ -52,6 +53,7 @@ function createBoard(cardEl) {
             div.style.minHeight = '15px'
             div.style.minWidth = '15px'
             div.style.border = '1px solid black'
+            squareArray.push(div)
             cardEl.append(div) 
             count++
         }
@@ -69,14 +71,28 @@ function createBoard(cardEl) {
 }
 
 function renderShips() {
-    // const card = Gameboard()
-    const card = 1
+    const card = Gameboard()
+    let count = 1
+    while (count < 6) {
+        const positionData = card[`ship${count}`]
+        const positisonCords = [positionData.startCord, positionData.endCord];
+        const firstSquareSearchEnd = positisonCords[0][0]
+        const firstSquareSearchStart = positisonCords[0][1]
+        const secondSquareSearchEnd = positisonCords[1][0]
+        const secondSquareSearchStart = positisonCords[1][1]
+        let start = parseInt(`${firstSquareSearchStart - 1}${firstSquareSearchEnd - 1}`)
+        let end = parseInt(`${secondSquareSearchStart - 1}${secondSquareSearchEnd - 1}`)
+        squareArray[start].style.backgroundColor = 'blue'
+        squareArray[end].style.backgroundColor = 'blue'
+        console.log([start, end])
+        count++
+    }
     return card
 }
-const playerBoard = renderShips()
-const botBoard = renderShips()
 createBoard(playerCard)
-renderShips(playerCard)
+console.log(squareArray);
+const playerBoard = renderShips()
+// const botBoard = renderShips()
 //TODO allow them to be dragged 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
