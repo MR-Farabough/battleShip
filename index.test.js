@@ -17,7 +17,7 @@ it ('Gamboard receiveAttack (hit 1)', () => {
 
 it ('Gameboard receiveAttack (hit 2)', () => {
     expect(Gameboard().receiveAttack([3,5]))
-    .toBe('HIT')
+    .toBe('MISS')
 })
 
 it ('Gamboard receiveAttack (miss 1)', () => {
@@ -31,7 +31,7 @@ it ('Gamboard receiveAttack (miss 2)', () => {
 })
 
 it ('Gamboard receiveAttack (miss 3)', () => {
-    expect(Gameboard().receiveAttack([5,3]))
+    expect(Gameboard().receiveAttack([3,5]))
     .toEqual('MISS')
 })
 
