@@ -158,5 +158,6 @@ const playerBoard = renderShips()
 //TODO allow them to be dragged 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
-    const botBoard = renderShips()
+    createBoard(botCard)
+    // const botBoard = renderShips()
 })
