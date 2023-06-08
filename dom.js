@@ -54,25 +54,25 @@ function createBoard(cardEl) {
             div.style.minWidth = '15px'
             div.style.border = '1px solid black'
             squareArray.push(div)
-            cardEl.append(div) 
+            cardEl.append(div)
             count++
         }
       }
     generateSquares()
-    const divs = document.querySelectorAll('.square')
-    let count = 0
-    while (count < divs.length) {
-        const divEL = divs[count]
-        divEL.addEventListener('mouseover', () => {
-            divEL.style.cursor = 'pointer'
-        })
-        count++
-    }
 }
 
 function renderShips() {
     const card = Gameboard()
     let index = 1
+    function createBoat(cord) {
+        const cordDiv = document.createElement('div')
+        cordDiv.style.cursor = 'move'
+        cordDiv.style.backgroundColor = 'blue'
+        cordDiv.setAttribute('draggable', true)
+        cordDiv.setAttribute('class', 'ship')
+        cordDiv.style.height = '100%'
+        squareArray[cord].appendChild(cordDiv)
+    }
     while (index < 6) {
         const positionData = card[`ship${index}`]
         const positisonCords = [positionData.startCord, positionData.endCord];
@@ -82,14 +82,14 @@ function renderShips() {
         const secondSquareSearchStart = positisonCords[1][1]
         let start = parseInt(`${firstSquareSearchStart - 1}${firstSquareSearchEnd - 1}`)
         let end = parseInt(`${secondSquareSearchStart - 1}${secondSquareSearchEnd - 1}`)
-        squareArray[start].style.backgroundColor = 'blue'
-        squareArray[end].style.backgroundColor = 'blue'
+        createBoat(end)
         const startLength = `${start}`.length
         const endLength = `${end}`.length
         let count = 0
+        //TODO UPDATED SQUARES ADDED TO DIVS
         if (startLength == 1 && endLength == 1) {
             while (start < end) {
-                squareArray[start].style.backgroundColor = 'blue'
+                createBoat(start)
                 start++
             }
         } else if (startLength == 1) {
@@ -104,7 +104,7 @@ function renderShips() {
             startIndex == 1 ? startIndex = 0 : null 
             count = 0
             while (count < endArray[startIndex]) {
-                squareArray[parseInt(`${count}${start}`)].style.backgroundColor = 'blue'
+                createBoat(parseInt(`${count}${start}`))
                 count++
             }
         } else if (endLength == 1) {
@@ -119,7 +119,7 @@ function renderShips() {
             endIndex == 1 ? endIndex = 0 : null 
             count = 0
             while (count < startArray[endIndex]) {
-                squareArray[parseInt(`${count}${end}`)].style.backgroundColor = 'blue'
+                createBoat(parseInt(`${count}${end}`))
                 count++
             }
         } else if (startLength == 2 && endLength == 2) {
@@ -138,13 +138,13 @@ function renderShips() {
             if (firstDigitCheck) {
                 let incrementer = startArray[1]
                 while (incrementer < endArray[1]) {
-                    squareArray[parseInt(`${startArray[0]}${incrementer}`)].style.backgroundColor = 'blue'
+                    createBoat(parseInt(`${startArray[0]}${incrementer}`))
                     incrementer++
                 }
             } else if (secondDigitCheck) {
                 let incrementer = startArray[0]
                 while (incrementer < endArray[0]) {
-                    squareArray[parseInt(`${incrementer}${endArray[1]}`)].style.backgroundColor = 'blue'
+                    createBoat(parseInt(`${incrementer}${endArray[1]}`))
                     incrementer++
                 }
             }
@@ -158,6 +158,5 @@ const playerBoard = renderShips()
 //TODO allow them to be dragged 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
-    createBoard(botCard)
     const botBoard = renderShips()
 })
