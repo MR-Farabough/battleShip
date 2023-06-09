@@ -80,10 +80,6 @@ function generateBoat(start, end) {
     const startArray = []
     const endString = end.toString()
     const endArray = []
-    let startIndex = endArray.indexOf(start.toString())
-    let endIndex = startArray.indexOf(end.toString())
-    const firstDigitCheck = startArray[0] == endArray[0]
-    const secondDigitCheck = startArray[1] == endArray[1]
     if (startLength == 1 && endLength == 1) {
         while (start < end) {
             createBoat(start)
@@ -94,6 +90,7 @@ function generateBoat(start, end) {
             endArray.push(endString[count])
             count++
         }
+        let startIndex = endArray.indexOf(startString)
         startIndex == 1 ? startIndex = 0 : null
         count = 0
         while (count < endArray[startIndex]) {
@@ -105,6 +102,7 @@ function generateBoat(start, end) {
             startArray.push(startString[count])
             count++
         }
+        let endIndex = startArray.indexOf(endString)
         endIndex == 1 ? endIndex = 0 : null 
         count = 0
         while (count < startArray[endIndex]) {
@@ -116,8 +114,9 @@ function generateBoat(start, end) {
             startArray.push(startString[count])
             endArray.push(endString[count])
             count++
-        }
-        
+        }  
+        const firstDigitCheck = startArray[0] == endArray[0]
+        const secondDigitCheck = startArray[1] == endArray[1]
         if (firstDigitCheck) {
             incrementer = startArray[1]
             while (incrementer < endArray[1]) {
@@ -176,6 +175,7 @@ draggables.forEach(drag => {
                 prevSquare = squareArray.indexOf(square)
             }
         })
+        console.log(prevSquare);
         //TODO Should be dragging the whole ship
         drag.classList.add('dragging')
     })
