@@ -71,15 +71,17 @@ function createBoat(cord) {
     squareArray[cord].appendChild(cordDiv)
 }
 
-function generateBoat(startLength, endLength) {
+function generateBoat(start, end) {
+    const startLength = `${start}`.length
+    const endLength = `${end}`.length
     let incrementer;
     let count = 0
-
-    let startIndex = endArray.indexOf(start.toString())
-    
-    let endIndex = startArray.indexOf(end.toString())
+    const startString = start.toString()
+    const startArray = []
     const endString = end.toString()
     const endArray = []
+    let startIndex = endArray.indexOf(start.toString())
+    let endIndex = startArray.indexOf(end.toString())
     const firstDigitCheck = startArray[0] == endArray[0]
     const secondDigitCheck = startArray[1] == endArray[1]
     if (startLength == 1 && endLength == 1) {
@@ -146,7 +148,7 @@ function renderShips() {
         let end = parseInt(`${secondSquareSearchStart - 1}${secondSquareSearchEnd - 1}`)
         const startLength = `${start}`.length
         const endLength = `${end}`.length
-        generateBoat(startLength, endLength)
+        generateBoat(start, end)
         createBoat(end)
         index++
     }
@@ -165,6 +167,7 @@ playBTN.addEventListener('click', () => {
 const draggables = document.querySelectorAll('.ship')
 const boardCords = document.querySelectorAll('.square')
 let prevSquare;
+const currentShipCords = []
 draggables.forEach(drag => {
     drag.addEventListener('dragstart', () => {
         //TODO Get the ship cords and put it in parent scope
