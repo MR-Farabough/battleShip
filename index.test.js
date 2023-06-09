@@ -20,9 +20,9 @@ it ('Gameboard receiveAttack (hit 2)', () => {
     .toBe('MISS')
 })
 
-it ('Gamboard receiveAttack (miss 1)', () => {
+it ('Gamboard receiveAttack (hit 3)', () => {
     expect(Gameboard().receiveAttack([5,5]))
-    .toEqual('MISS')
+    .toEqual('HIT')
 })
 
 it ('Gamboard receiveAttack (miss 2)', () => {
