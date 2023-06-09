@@ -155,9 +155,40 @@ function renderShips() {
 }
 createBoard(playerCard)
 const playerBoard = renderShips()
-//TODO allow them to be dragged 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
     createBoard(botCard)
     // const botBoard = renderShips()
+})
+
+const draggables = document.querySelectorAll('.ship')
+const boardCords = document.querySelectorAll('.square')
+let prevSquare;
+draggables.forEach(drag => {
+    drag.addEventListener('dragstart', () => {
+        squareArray.forEach(square => {
+            if (square.contains(drag)) {
+                prevSquare = squareArray.indexOf(square)
+            }
+        })
+        drag.classList.add('dragging')
+    })
+})
+
+draggables.forEach(drag => {
+    drag.addEventListener('dragend', () => {
+        drag.classList.remove('dragging')
+    })
+})
+
+boardCords.forEach(cord => {
+    cord.addEventListener('dragover', () => {
+        const curDrag = document.querySelector('.dragging')
+        curDrag.classList.remove('.dragging')
+        if (cord.childNodes.length == 0) {
+            //TODO WHEN BOX DRAG LOG SHIP CORDS
+            // Start of logic for finding the way of the ship
+            cord.appendChild(curDrag)
+        }
+    })
 })
