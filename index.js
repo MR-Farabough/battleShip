@@ -27,12 +27,12 @@ export function Gameboard() {
             endCord: [2,1]},
 
         ship2: {
-            startCord: [3,2],
-            endCord: [5,2]},
+            startCord: [3,3],
+            endCord: [5,3]},
 
         ship3: {
-            startCord: [4,3],
-            endCord: [6,3]},
+            startCord: [4,5],
+            endCord: [6,5]},
 
         ship4: {
             startCord: [8,1],
