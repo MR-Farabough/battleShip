@@ -120,6 +120,7 @@ export function Gameboard() {
             if (!this.checkSpotAvailablity(endCordOne, endCordTwo)) return 'MOVE FAILURE'
             this[ship].startCord = endCordOne
             this[ship].endCord = endCordTwo
+            return 'MOVE SUCCESSFUL'
         }
     }
     return obj
