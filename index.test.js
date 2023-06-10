@@ -35,6 +35,16 @@ it ('Gamboard receiveAttack (miss 3)', () => {
     .toEqual('MISS')
 })
 
+it ('Gameboard.move (move successful)', () => {
+    expect(Gameboard().move('ship5', [[2,6],[2,10]]))
+    .toBe('MOVE SUCCESSFUL')
+}) 
+
+it ('Gameboard.move (move successful)', () => {
+    expect(Gameboard().move('ship3',[4,6],[6,6]))
+    .toBe('MOVE SUCCESSFUL')
+})
+
 it ('Gameboard.move (row fail)', () => {
     expect(Gameboard().move('ship1', [[1,7],[1,8]]))
     .toEqual('MOVE FAILURE')
