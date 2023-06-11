@@ -3,9 +3,9 @@ import { Gameboard } from "./index.js"
 const colorModeBTN = document.querySelector('.colorMode')
 const header = document.querySelector('.header')
 const title = document.querySelector('.title')
-const gameBoard = document.querySelector('.game-boards')
-const playerCard = document.querySelector('.card-one')
-const botCard = document.querySelector('.card-two')
+const gameBoardDOM = document.querySelector('.game-boards')
+const playerCardDOM = document.querySelector('.card-one')
+const botCardDOM = document.querySelector('.card-two')
 const body = document.querySelector('body')
 const player = document.querySelectorAll('.player')
 const footer = document.querySelector('.footer')
@@ -13,10 +13,18 @@ const footerTitle = document.querySelector('.footer-title')
 const githubLogo = document.querySelector('.github-logo')
 const playBTN = document.querySelector('.play')
 const squareArray = []
+const shipArr = []
+const shipObj = {
+    'ship1' : [],
+    'ship2' : [],
+    'ship3' : [],
+    'ship4' : [],
+    'ship5' : [],
+}
 const elementArray = [
     colorModeBTN, title,
-    gameBoard, playerCard,
-    botCard, header, footer, 
+    gameBoardDOM, playerCardDOM,
+    botCardDOM, header, footer, 
     footerTitle, githubLogo, body ]
 
 
@@ -61,17 +69,20 @@ function createBoard(cardEl) {
     generateSquares()
 }
 
-function createBoat(cord) {
+function createBoat(cord, ship) {
     const cordDiv = document.createElement('div')
     cordDiv.style.cursor = 'move'
     cordDiv.style.backgroundColor = 'blue'
     cordDiv.setAttribute('draggable', true)
     cordDiv.setAttribute('class', 'ship')
     cordDiv.style.height = '100%'
-    squareArray[cord].appendChild(cordDiv)
+    if (squareArray[cord].childNodes.length < 1) {
+        squareArray[cord].appendChild(cordDiv)
+        shipArr.push([ship, cord])
+    }
 }
 
-function generateBoat(start, end) {
+function generateBoat(start, end, ship) {
     const startLength = `${start}`.length
     const endLength = `${end}`.length
     let incrementer;
@@ -82,7 +93,7 @@ function generateBoat(start, end) {
     const endArray = []
     if (startLength == 1 && endLength == 1) {
         while (start < end) {
-            createBoat(start)
+            createBoat(start, ship)
             start++
         }
     } else if (startLength == 1) {
@@ -94,7 +105,7 @@ function generateBoat(start, end) {
         startIndex == 1 ? startIndex = 0 : null
         count = 0
         while (count < endArray[startIndex]) {
-            createBoat(parseInt(`${count}${start}`))
+            createBoat(parseInt(`${count}${start}`), ship)
             count++
         }
     } else if (endLength == 1) {
@@ -106,7 +117,7 @@ function generateBoat(start, end) {
         endIndex == 1 ? endIndex = 0 : null 
         count = 0
         while (count < startArray[endIndex]) {
-            createBoat(parseInt(`${count}${end}`))
+            createBoat(parseInt(`${count}${end}`), ship)
             count++
         }
     } else if (startLength == 2 && endLength == 2) {
@@ -120,21 +131,21 @@ function generateBoat(start, end) {
         if (firstDigitCheck) {
             incrementer = startArray[1]
             while (incrementer < endArray[1]) {
-                createBoat(parseInt(`${startArray[0]}${incrementer}`))
+                createBoat(parseInt(`${startArray[0]}${incrementer}`), ship)
                 incrementer++
             }
         } else if (secondDigitCheck) {
             incrementer = startArray[0]
             while (incrementer < endArray[0]) {
-                createBoat(parseInt(`${incrementer}${endArray[1]}`))
+                createBoat(parseInt(`${incrementer}${endArray[1]}`), ship)
                 incrementer++
             }
         }
     }
 }
 
-function renderShips() {
-    const card = Gameboard()
+function renderShips(board) {
+    const card = board
     let index = 1
     while (index < 6) {
         const positionData = card[`ship${index}`]
@@ -145,39 +156,61 @@ function renderShips() {
         const secondSquareSearchStart = positisonCords[1][1]
         let start = parseInt(`${firstSquareSearchStart - 1}${firstSquareSearchEnd - 1}`)
         let end = parseInt(`${secondSquareSearchStart - 1}${secondSquareSearchEnd - 1}`)
-        const startLength = `${start}`.length
-        const endLength = `${end}`.length
-        generateBoat(start, end)
-        createBoat(end)
+        generateBoat(start, end, `ship${index}`)
+        createBoat(end, `ship${index}`)
         index++
     }
     return card
 }
 
-createBoard(playerCard)
-const playerBoard = renderShips()
+function convertShipArr() {
+    shipArr.forEach(ship => {
+        shipObj[ship[0]].push(ship[1])
+    })
+}
 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
-    createBoard(botCard)
-    // const botBoard = renderShips()
+    createBoard(botCardDOM)
+    const botBoard = Gameboard()
+    renderShips(botBoard)
 })
+
+createBoard(playerCardDOM)
+const playerBoard = Gameboard()
+renderShips(playerBoard)
+convertShipArr()
+
+console.log(shipObj)
 
 const draggables = document.querySelectorAll('.ship')
 const boardCords = document.querySelectorAll('.square')
+let currentShipCords = []
 let prevSquare;
-const currentShipCords = []
+let currentShip;
 draggables.forEach(drag => {
     drag.addEventListener('dragstart', () => {
-        //TODO Get the ship cords and put it in parent scope
         squareArray.forEach(square => {
+            // Get the square you are dragging
             if (square.contains(drag)) {
                 prevSquare = squareArray.indexOf(square)
             }
         })
-        console.log(prevSquare);
-        //TODO Should be dragging the whole ship
-        drag.classList.add('dragging')
+        // Get current ship cords
+        let count = 1
+        while (count < 6) {
+            if (shipObj[`ship${count}`].includes(prevSquare)) {
+                currentShipCords = shipObj[`ship${count}`]
+                currentShip = `ship${count}`
+            }
+            count++
+        }
+        // Add dragging class to ship on certain cord
+        currentShipCords.forEach(cord => {
+            if(squareArray[cord].childNodes.length > 0) {
+                squareArray[cord].childNodes[0].classList.add('dragging')
+            }
+        })
     })
 })
 
@@ -188,13 +221,50 @@ draggables.forEach(drag => {
 })
 
 boardCords.forEach(cord => {
-    cord.addEventListener('dragover', () => {
-        //TODO Use gameboard.CheckPosition to see if it is clear
-        //TODO Append ship not just the curDrag
-        const curDrag = document.querySelector('.dragging')
-        curDrag.classList.remove('.dragging')
+    cord.addEventListener('dragover', () => { 
         if (cord.childNodes.length == 0) {
-            cord.appendChild(curDrag)
+        const draggingList = document.querySelectorAll('.dragging')
+        const newCord = squareArray.indexOf(cord)
+        const difference = newCord - prevSquare
+        const newCordNums = []
+        const newCords = []
+        const prevCords = []
+        shipObj[currentShip].forEach(ship => {
+            newCordNums.push(ship + difference)
+        })
+        draggingList.forEach(drag => {
+            prevCords.push(drag.parentElement)
+        })
+        newCordNums.forEach(num => {
+            newCords.push(squareArray[num])
+        })
+        let count = 0
+        while(count < prevCords.length) {
+            const shipSquare = prevCords[count].childNodes[0]
+            newCords[count].append(shipSquare)
+            count++
         }
+        //TODO get the cords of new position
+        const startString = newCordNums[0].toString()
+        const endString = newCordNums[newCordNums.length-1].toString()
+        const startCord = []
+        const endCord = []
+        if (startString.length == 1) {
+            startCord.push(newCordNums[0] + 1, 1)
+        } else if (startString.length == 2) {
+            startCord.push(parseInt(startString[1]) + 1, parseInt(startString[0]) + 1)
+        }
+        if (endString.length == 1) {
+            endCord.push(newCordNums[newCordNums.length-1] + 1, 1)
+        } else if (endString.length == 2) {
+            endCord.push(parseInt(endString[1]) + 1,parseInt(endString[0]) + 1)
+        }
+        if (playerBoard.move(currentShip, [startCord, endCord]) == 'MOVE SUCCESSFUL') {
+            console.log(currentShip, [startCord, endCord])
+            playerBoard.move(currentShip, [startCord, endCord])
+            console.log(playerBoard)
+            renderShips(playerBoard)
+        } 
+    }
     })
 })
