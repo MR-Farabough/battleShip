@@ -11,6 +11,31 @@
     --darkModeGrey: rgb(173, 169, 169);
 }
 
+h3, input {
+    margin-left: 15px;
+}
+
+input {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.modal.active {
+    background-color: rgb(126, 169, 110);
+    background-color: #9E788F;
+    border-radius: 10px;
+    color: #fefc92;
+    width: 100%;
+}
+
+.modal.deactive {
+    display: none;
+}
+
+.play.deactive {
+    display: none ;
+}
+
 body {
     margin: 0px;
     background-color: var(--lightModeBackGround);
