@@ -17,7 +17,12 @@
 
 .rotate-field {
     margin-top: 25px;
-    margin-left: 10%;
+    margin-left: 5px;
+}
+
+.rotateBTN {
+    padding: 15px;
+    border-radius: 15px;
 }
 
 h3, input {
@@ -43,6 +48,20 @@ input {
 
 .play.deactive {
     display: none ;
+}
+
+.bottom-modal {
+    display: flex;
+}
+
+.submit-area {
+    margin-top: 25px;
+    margin-left: 5px;
+}
+
+.nextBTN {
+    padding: 15px;
+    border-radius: 15px;
 }
 
 body {
