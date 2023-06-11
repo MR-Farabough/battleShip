@@ -11,6 +11,15 @@
     --darkModeGrey: rgb(173, 169, 169);
 }
 
+.top-modal {
+    display: flex;
+}
+
+.rotate-field {
+    margin-top: 25px;
+    margin-left: 10%;
+}
+
 h3, input {
     margin-left: 15px;
 }
