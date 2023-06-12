@@ -41,12 +41,12 @@ it ('Gameboard.move (row fail)', () => {
 })
 
 it ('Gamboard.move (column fail)', () => {
-    expect(Gameboard().move('ship5', [[4,8], [8,8]]))
+    expect(Gameboard().move('ship5', [[8,4], [8,8]]))
     .toBe('MOVE FAILURE')
 })
 
 it ('Gamboard.move (FAILURE move)', () => {
-    expect(Gameboard().move('ship1', [[2,2], [2,3]]))
+    expect(Gameboard().move('ship1', [[2,2], [3,3]]))
     .toBe('MOVE FAILURE')
 })
 
