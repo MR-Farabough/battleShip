@@ -50,6 +50,11 @@ it ('Gamboard.move (FAILURE move)', () => {
     .toBe('MOVE FAILURE')
 })
 
+it ('Gameboard.move (MOVE SUCCESS)', () => {
+    expect(Gameboard().move(`ship3`, [[5,7],[8,7]]))
+    .toBe('MOVE SUCCESSFUL')
+})
+
 it ('Checkend method (GAME ON)', () => {
     expect(Gameboard().checkEnd())
     .toBe(false)
