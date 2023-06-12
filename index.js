@@ -52,34 +52,35 @@ export function Gameboard() {
             }
             return end == 5 ? true : false
         },
-        checkSpotAvailablity(endCordOne, endCordTwo) {
-            let count = 1
-            let checkAvailable = true
-            while (count < 6) {
-                const shipStart = this[`ship${count}`].startCord
-                const shipEnd = this[`ship${count}`].endCord
-                const shipLevelCheck = shipStart[0] == shipEnd[0]
-                const shipColumnCheck = shipStart[1] == shipEnd[1]
-                const newCordLevelCheck = endCordOne[0] == endCordTwo[0]
-                const newCordColumnCheck = endCordOne[1] == endCordTwo[1]
-                if (shipLevelCheck) {
-                    if (newCordColumnCheck && endCordOne[1] == shipStart[1]) {
-                        checkAvailable = false
-                    }
-                    if (newCordLevelCheck && endCordOne[0] == shipStart[0]) {
-                        checkAvailable = false
-                    }
-                } else if (shipColumnCheck) {
-                    if (newCordColumnCheck && shipEnd[0] >= endCordOne[0]) {
-                        checkAvailable = false
-                    }
-                    if (newCordLevelCheck && shipEnd[1] >= endCordOne[1]) {
-                        checkAvailable = false
-                    }
-                }
-                count++
+        checkSpotAvailability(endCordOne, endCordTwo) {
+            const newShipCoordinates = [endCordOne, endCordTwo];
+            for (let count = 1; count <= 5; count++) {
+              const existingShip = this[`ship${count}`];
+              if (this.doCoordinatesOverlap(newShipCoordinates, existingShip)) {
+                return false;
+              }
             }
-            return checkAvailable == false ? false : true
+            return true;
+        },
+        doCoordinatesOverlap(newShipCoordinates, existingShip) {
+            const [newStart, newEnd] = newShipCoordinates;
+            const [existingStart, existingEnd] = [
+              existingShip.startCord,
+              existingShip.endCord,
+            ];
+            for (let col = newStart[0]; col <= newEnd[0]; col++) {
+              for (let row = newStart[1]; row <= newEnd[1]; row++) {
+                if (
+                  col >= existingStart[0] &&
+                  col <= existingEnd[0] &&
+                  row >= existingStart[1] &&
+                  row <= existingEnd[1]
+                ) {
+                  return true;
+                }
+              }
+            }
+            return false;
         },
         receiveAttack(cord) {
             let count = 1
@@ -117,36 +118,13 @@ export function Gameboard() {
             }
         },
         move(ship, [endCordOne, endCordTwo]) {
-            if (!this.checkSpotAvailablity(endCordOne, endCordTwo)) return 'MOVE FAILURE'
+            if (!this.checkSpotAvailability(endCordOne, endCordTwo)) {
+                return 'MOVE FAILURE'
+            }
             this[ship].startCord = endCordOne
             this[ship].endCord = endCordTwo
+            return 'MOVE SUCCESSFUL'
         }
     }
     return obj
-}
-
-const player = Gameboard()
-const bot = Gameboard()
-let turn = 'player'
-switch (turn) {
-    case 'player':
-        player.checkEnd()
-        // Wait for player input if game over is false
-        //TODO Need to get input on board. 
-            // Just use a basic one for now
-        //TODO Check input is not already used
-
-        turn = 'bot'
-        break;
-
-    case 'bot':
-        bot.checkEnd()
-        // Get bot input if game over is false
-        botInput
-        turn = 'player'
-        break;
-}
-
-function botInput() {
-
 }
