@@ -173,12 +173,64 @@ function getShipLength(ship) {
 
 const playerBoard = Gameboard()
 const botBoard = Gameboard()
+//TODO MAKE RANDOM CORDS FOR Bot
 const modalEl = document.querySelector('.modal')
 const bgOpacity = document.querySelector('.backColor')
 const nextBTN = document.querySelector('.nextBTN')
 const inputEls = document.querySelectorAll('input')
 let selectedShip;
 let selectedInput;
+
+function checkCords(cords) {
+    let newSet = cords
+    cords.forEach(cord => {
+        cord.forEach(num => {
+            if (num > 10) {
+                const curArrNumIndex = cord.indexOf(num)
+                const subtract = cords[1][curArrNumIndex] - cords[0][curArrNumIndex]
+                newSet[1][curArrNumIndex] -= subtract * 2
+                const firstArrayCache = newSet[0]
+                const secondArrayCache = newSet[1]
+                newSet = [secondArrayCache, firstArrayCache]
+            }
+        })
+    })
+    return newSet
+}
+
+function createCords(ship, cord) {
+    const shipLength = getShipLength(ship)
+    const firstCordNum1 = cord.slice(0, cord.indexOf(','))
+    const firstCordNum2 = cord.slice(cord.indexOf(',') + 1)
+    let newCords = [ 
+        [parseInt(firstCordNum1), parseInt(firstCordNum2)],
+        [parseInt(firstCordNum1) + shipLength, parseInt(firstCordNum2)]
+    ]
+    return checkCords(newCords)
+}
+
+function createBotCords() {
+    const shipOneCord = [Math.floor(Math.random() * 4) + 1, Math.floor(Math.random() * 5) + 1];
+    const shipTwoCord = [Math.floor(Math.random() * 3) + 6, Math.floor(Math.random() * 4) + 1];
+    const shipThreeCord = [Math.floor(Math.random() * 3) + 6, Math.floor(Math.random() * 3) + 5];
+    const shipFourCord = [Math.floor(Math.random() * 2) + 6, 9];
+    const shipFiveCord = [1, Math.floor(Math.random() * 5) + 6];
+    const cords = [
+        createCords(1, shipOneCord), 
+        createCords(2, shipTwoCord),
+        createCords(3, shipThreeCord),
+        createCords(4, shipFourCord),
+        createCords(5, shipFiveCord)
+    ]
+    let count = 1
+    while (count < 6) {
+        console.log(cords[count - 1])
+        botBoard[`ship${count}`].startCord = cords[count - 1][0]
+        botBoard[`ship${count}`].endCord = cords[count - 1][1]
+        count++
+    }
+}
+createBotCords()
 
 inputEls.forEach(input => {
     input.addEventListener('input', () => {
@@ -233,33 +285,6 @@ inputEls.forEach(input => {
             checkNum(secondNumber)
         }
 
-        function checkCords(cords) {
-            let newSet = cords
-            cords.forEach(cord => {
-                cord.forEach(num => {
-                    if (num > 10) {
-                        const curArrNumIndex = cord.indexOf(num)
-                        const subtract = cords[1][curArrNumIndex] - cords[0][curArrNumIndex]
-                        newSet[1][curArrNumIndex] -= subtract * 2
-                        const firstArrayCache = newSet[0]
-                        const secondArrayCache = newSet[1]
-                        newSet = [secondArrayCache, firstArrayCache]
-                    }
-                })
-            })
-            return newSet
-        }
-
-        function createCords(ship, cord) {
-            const shipLength = getShipLength(ship)
-            const firstCordNum1 = cord.slice(0, cord.indexOf(','))
-            const firstCordNum2 = cord.slice(cord.indexOf(',') + 1)
-            let newCords = [ 
-                [parseInt(firstCordNum1), parseInt(firstCordNum2)],
-                [parseInt(firstCordNum1) + shipLength, parseInt(firstCordNum2)]
-            ]
-            return checkCords(newCords)
-        }
         function ghostRender(ship, cord) {
             if (cord.includes(',')) {
                 document.querySelectorAll('.ship').forEach(ship => {
