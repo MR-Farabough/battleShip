@@ -264,18 +264,15 @@ inputEls.forEach(input => {
             ]
             return checkCords(newCords)
         }
-        //TODO FIX Ghost Render
         function ghostRender(ship, cord) {
             if (cord.includes(',')) {
                 document.querySelectorAll('.ship').forEach(ship => {
                     ship.remove()
                 })
                 const cords = createCords(ship,cord)
-                console.log(playerBoard.move(`ship${shipIndex}`, cords), 'move status')
+                playerBoard.move(`ship${shipIndex}`, cords)
                 renderShips(playerBoard, 'PLAYER')
-                console.log(playerBoard);
             }
-            //TODO ^- Render a ghost ship
         } 
         if (valid) ghostRender(shipIndex, value)
     })
@@ -299,7 +296,6 @@ inputEls.forEach(input => {
                 ship.remove();
             });
             playerBoard.move(`ship${selectedInput}`, [selectedShip.startCord, selectedShip.endCord]);
-            console.log(selectedShip, 'level');
             renderShips(playerBoard, 'PLAYER');
         } else if (shipColumn) {
             let endCord = selectedShip.endCord;
@@ -315,26 +311,12 @@ inputEls.forEach(input => {
             document.querySelectorAll('.ship').forEach(ship => {
                 ship.remove();
             });
-            console.log(selectedShip, 'column');
             renderShips(playerBoard, 'PLAYER');
         }
     });
 })
 
-
-//TODO ADD SUBMIT LOGIC -> just alert errors
-//TODO DELETE UNNECESSARY LOGIC AFTER THINKING ABOUT IT
 nextBTN.addEventListener('click', () => {
-    const inputArray = []
-    let count = 1
-    while (count < 6) {
-        const playerStart = playerBoard[`ship${count}`].startCord
-        const playerEnd = playerBoard[`ship${count}`].endCord
-        const input = document.querySelector(`.cordInput${count}`)
-        inputArray.push(input.value)
-        count++
-    }
-    console.log(inputArray)
     modalEl.childNodes.forEach(node => {
         modalEl.remove(node)
     })
@@ -346,10 +328,15 @@ nextBTN.addEventListener('click', () => {
     renderShips(playerBoard, 'PLAYER')
 })
 createBoard(playerCardDOM, 'PLAYER')
-//TODO allow them to be dragged 
+
 playBTN.addEventListener('click', () => {
     playBTN.remove()
     createBoard(botCardDOM, 'BOT')
     const botBoard = Gameboard()
     renderShips(botBoard, 'BOT')
+    playGame(playerBoard, botBoard)
 })
+
+function playGame(player, bot) {
+    console.log(player, bot)
+}
