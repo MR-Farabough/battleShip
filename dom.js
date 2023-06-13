@@ -173,7 +173,6 @@ function getShipLength(ship) {
 
 const playerBoard = Gameboard()
 const botBoard = Gameboard()
-//TODO MAKE RANDOM CORDS FOR Bot
 const modalEl = document.querySelector('.modal')
 const bgOpacity = document.querySelector('.backColor')
 const nextBTN = document.querySelector('.nextBTN')
@@ -210,27 +209,53 @@ function createCords(ship, cord) {
 }
 
 function createBotCords() {
-    const shipOneCord = [Math.floor(Math.random() * 4) + 1, Math.floor(Math.random() * 5) + 1];
-    const shipTwoCord = [Math.floor(Math.random() * 3) + 6, Math.floor(Math.random() * 4) + 1];
-    const shipThreeCord = [Math.floor(Math.random() * 3) + 6, Math.floor(Math.random() * 3) + 5];
-    const shipFourCord = [Math.floor(Math.random() * 2) + 6, 9];
-    const shipFiveCord = [1, Math.floor(Math.random() * 5) + 6];
-    const cords = [
-        createCords(1, shipOneCord), 
-        createCords(2, shipTwoCord),
-        createCords(3, shipThreeCord),
-        createCords(4, shipFourCord),
-        createCords(5, shipFiveCord)
-    ]
-    let count = 1
-    while (count < 6) {
-        console.log(cords[count - 1])
-        botBoard[`ship${count}`].startCord = cords[count - 1][0]
-        botBoard[`ship${count}`].endCord = cords[count - 1][1]
-        count++
+    const shipLengths = [2,3,3,4,5]
+    const newCords = {}
+    function getRandomOrientation() {
+        return Math.random() < 0.5 ? 'horizontal' : 'vertical';
+    }
+    function checkOverlap(startCord, endCord) {
+        for (const ship in newCords) {
+        const existingStartCord = newCords[ship].startCord
+        const existingEndCord = newCords[ship].endCord
+        if (
+            (startCord[0] <= existingEndCord[0] && endCord[0] >= existingStartCord[0]) && // Check for horizontal overlap
+            (startCord[1] <= existingEndCord[1] && endCord[1] >= existingStartCord[1])    // Check for vertical overlap
+        ) {
+            return true
+        }
+        }
+        return false
+    }
+    for (let i = 0; i < shipLengths.length; i++) {
+        const shipLength = shipLengths[i];
+        let isValidPlacement = false;
+        let startCord, endCord;
+        while (!isValidPlacement) {
+        const orientation = getRandomOrientation();
+        if (orientation === 'horizontal') {
+            const row = Math.floor(Math.random() * 10) + 1;
+            const col = Math.floor(Math.random() * (11 - shipLength)) + 1;
+            startCord = [row, col];
+            endCord = [row, col + shipLength - 1];
+        } else {
+            const row = Math.floor(Math.random() * (11 - shipLength)) + 1;
+            const col = Math.floor(Math.random() * 10) + 1;
+            startCord = [row, col];
+            endCord = [row + shipLength - 1, col];
+        }
+        if (!checkOverlap(startCord, endCord)) {
+            isValidPlacement = true;
+        }
+        }
+        newCords[`ship${i + 1}`] = { startCord, endCord };
+    }
+    for (const ship in newCords) {
+        botBoard[ship].startCord = newCords[ship].startCord
+        botBoard[ship].endCord = newCords[ship].endCord
     }
 }
-createBotCords()
+createBotCords();
 
 inputEls.forEach(input => {
     input.addEventListener('input', () => {
