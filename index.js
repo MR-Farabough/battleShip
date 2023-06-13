@@ -4,14 +4,13 @@ export function Ship(length, timesHit = 0, sunk = false) {
         timesHit,
         sunk,
         isSunk() {
-            return this.timesHit + 1 === this.length
+            return this.timesHit === this.length
         },
         hit() {
             if (!this.isSunk()) {
                 this.timesHit += 1
                 return this
             }
-            this.timesHit += 1,
             this.sunk = true
             return 'SUNK'
         }
@@ -19,8 +18,8 @@ export function Ship(length, timesHit = 0, sunk = false) {
 }
 
 export function Gameboard() {
-    const shipArr = [Ship(2),Ship(3),Ship(3),Ship(4),Ship(5)]
     const obj = {
+        shipArr: [Ship(2),Ship(3),Ship(3),Ship(4),Ship(5)],
         missedShots: [],
         ship1: {
             startCord: [1,1],
@@ -44,8 +43,8 @@ export function Gameboard() {
         checkEnd() {
             let count = 0
             let end = 0
-            while (count < shipArr.length) {
-                if (shipArr[count].sunk == true ) {
+            while (count < this.shipArr.length) {
+                if (this.shipArr[count].sunk == true ) {
                     return end += 1
                 }
                 count++
@@ -92,8 +91,8 @@ export function Gameboard() {
           
               if ((levelCheck && cord[1] >= Math.min(start[1], end[1]) && cord[1] <= Math.max(start[1], end[1]) && cord[0] >= Math.min(start[0], end[0]) && cord[0] <= Math.max(start[0], end[0])) ||
                   (columnCheck && cord[0] === start[0] && cord[1] >= Math.min(start[1], end[1]) && cord[1] <= Math.max(start[1], end[1]))) {
-                shipArr[count - 1].hit();
-                if (shipArr[count - 1].isSunk()) {
+                this.shipArr[count - 1].hit();
+                if (this.shipArr[count - 1].isSunk()) {
                   console.log(`Ship ${count} is sunk!`);
                 }
                 return 'HIT';
