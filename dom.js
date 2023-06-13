@@ -349,47 +349,74 @@ function convertNumToCord(num) {
     return cordNum
 }
 
-function playGame(player, bot) {
-    if (turn == "Player's Turn") {
-      botSquareArray.forEach((square) => {
-        square.style.cursor = 'pointer';
-        square.addEventListener('click', handleClick);
-      });
-    } else if (turn == "Bot's Turn") {
-      let botGuess;
-      function getBotTurn() {
-        botGuess = Math.floor(Math.random() * 100);
-        if (!botGuesses.includes(botGuess)) {
-          return botGuess;
+function checkEnd() {
+    let count = 0
+    const shipSunkArray = []
+    const botSunkArray = []
+    while (count < 5) {
+        if (playerBoard.shipArr[count].isSunk() == true) {
+            shipSunkArray.push(`ship${count}`)
         }
-        getBotTurn();
-      }
-      getBotTurn();
-      const cord = convertNumToCord(`${botGuess}`);
-      console.log(cord, 'BOT CORD');
-      if (playerBoard.receiveAttack(cord) == 'HIT') {
-        botGuesses.push(botGuess)
-        playerSquareArray[botGuess].childNodes[0].style.backgroundColor = 'red';
-      } else if (playerBoard.receiveAttack(cord) == 'MISS') {
-        botGuesses.push(botGuess)
-        playerSquareArray[botGuess].style.backgroundColor = 'grey';
-      }
-      turn = "Player's Turn";
-      setTimeout(() => playGame(playerBoard, botBoard), 500);
+        count++
+    }
+    count = 0
+    while (count < 5) {
+        if (botBoard.shipArr[count].isSunk() == true) {
+            botSunkArray.push(`ship${count}`)
+        }
+        count++
+    }
+    if (shipSunkArray.length == 5) {
+        alert("You LOST! All of your boats have been sunk.");
+    } else if (botSunkArray.length == 5) {
+        alert("You WON! All of the bot's boats have been sunk.");
     }
 }
 
+function playGame(player, bot) {
+    if (turn == "Player's Turn") {
+        botSquareArray.forEach((square) => {
+        square.style.cursor = 'pointer';
+        square.addEventListener('click', handleClick);
+        });
+    } else if (turn == "Bot's Turn") {
+        let botGuess;
+        function getBotTurn() {
+        botGuess = Math.floor(Math.random() * 100);
+        if (!botGuesses.includes(botGuess)) {
+            return botGuess;
+        }
+        getBotTurn();
+        }
+        getBotTurn();
+        const cord = convertNumToCord(`${botGuess}`)
+        if (playerBoard.receiveAttack(cord) == 'HIT') {
+        botGuesses.push(botGuess)
+        playerSquareArray[botGuess].childNodes[0].style.backgroundColor = 'red'
+        } else if (playerBoard.receiveAttack(cord) == 'MISS') {
+        botGuesses.push(botGuess)
+        playerSquareArray[botGuess].style.backgroundColor = 'grey'
+        }
+        turn = "Player's Turn";
+        setTimeout(() => {
+        checkEnd();
+        playGame(playerBoard, botBoard)
+        }, 500);
+    }
+}
+  
 function handleClick() {
-    let cord = convertNumToCord(`${botSquareArray.indexOf(this)}`);
+    let cord = convertNumToCord(`${botSquareArray.indexOf(this)}`)
     if (botBoard.receiveAttack(cord) == 'HIT') {
-        this.style.backgroundColor = 'red';
+        this.style.backgroundColor = 'red'
     } else if (botBoard.receiveAttack(cord) == 'MISS') {
-        this.style.backgroundColor = 'grey';
+        this.style.backgroundColor = 'grey'
     }
     turn = "Bot's Turn";
     botSquareArray.forEach((square) => {
-        square.style.cursor = 'default';
-        square.removeEventListener('click', handleClick);
+        square.style.cursor = 'default'
+        square.removeEventListener('click', handleClick)
     });
-    playGame(player, botBoard);
-}
+    checkEnd()
+    playGame(player, botBoard)
+}  
