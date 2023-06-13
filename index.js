@@ -83,40 +83,28 @@ export function Gameboard() {
             return false;
         },
         receiveAttack(cord) {
-            let count = 1
+            let count = 1;
             while (count < 6) {
-                const start = this[`ship${count}`].startCord
-                const end = this[`ship${count}`].endCord
-                const levelCheck = start[0] == end[0]
-                const columnCheck = start[1] == end[1]
-                if (levelCheck && cord[0] == end[0]) {
-                    if (start[1] <= cord[1] && cord[1] <= end[1]) {
-                        if (shipArr[count - 1].hit() == 'SUNK') {
-                            this[`ship${count}`].startCord = null
-                            this[`ship${count}`].endCord = null
-                        } else {
-                            shipArr[count - 1] = shipArr[count - 1].hit()
-                            return 'HIT'
-                        }
-                    }
-                } else if (columnCheck && cord[1] == end[1]) {
-                    if (start[0] <= cord[0] && cord[0] <= end[0]) {
-                        if (shipArr[count - 1].hit() == 'SUNK') {
-                            this[`ship${count}`].startCord = null
-                            this[`ship${count}`].endCord = null
-                        } else {
-                            shipArr[count - 1] = shipArr[count - 1].hit()
-                            return 'HIT'
-                        }
-                    }
+              const start = this[`ship${count}`].startCord;
+              const end = this[`ship${count}`].endCord;
+              const levelCheck = start[1] === end[1];
+              const columnCheck = start[0] === end[0];
+          
+              if ((levelCheck && cord[1] >= Math.min(start[1], end[1]) && cord[1] <= Math.max(start[1], end[1]) && cord[0] >= Math.min(start[0], end[0]) && cord[0] <= Math.max(start[0], end[0])) ||
+                  (columnCheck && cord[0] === start[0] && cord[1] >= Math.min(start[1], end[1]) && cord[1] <= Math.max(start[1], end[1]))) {
+                shipArr[count - 1].hit();
+                if (shipArr[count - 1].isSunk()) {
+                  console.log(`Ship ${count} is sunk!`);
                 }
-                count++
-                if (count == 6) {
-                    this.missedShots.push(cord)
-                    return 'MISS'
-                }
+                return 'HIT';
+              }
+              count++;
+              if (count === 6) {
+                this.missedShots.push(cord);
+                return 'MISS';
+              }
             }
-        },
+        },                                   
         move(ship, [endCordOne, endCordTwo]) {
             if (!this.checkSpotAvailability(endCordOne, endCordTwo)) {
                 return 'MOVE FAILURE'
