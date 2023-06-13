@@ -373,7 +373,7 @@ function checkEnd() {
     }
 }
 
-function playGame(player, bot) {
+function playGame() {
     if (turn == "Player's Turn") {
         botSquareArray.forEach((square) => {
         square.style.cursor = 'pointer';
@@ -400,7 +400,7 @@ function playGame(player, bot) {
         turn = "Player's Turn";
         setTimeout(() => {
         checkEnd();
-        playGame(playerBoard, botBoard)
+        playGame()
         }, 500);
     }
 }
@@ -418,5 +418,5 @@ function handleClick() {
         square.removeEventListener('click', handleClick)
     });
     checkEnd()
-    playGame(player, botBoard)
+    playGame()
 }  
