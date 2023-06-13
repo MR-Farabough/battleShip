@@ -331,12 +331,18 @@ createBoard(playerCardDOM, 'PLAYER')
 
 playBTN.addEventListener('click', () => {
     playBTN.remove()
-    createBoard(botCardDOM, 'BOT')
     const botBoard = Gameboard()
-    renderShips(botBoard, 'BOT')
     playGame(playerBoard, botBoard)
 })
 
 function playGame(player, bot) {
+    createBoard(botCardDOM, 'BOT')
+    renderShips(bot, 'BOT')
+    botSquareArray.forEach(square => {
+        square.style.cursor = 'pointer'
+        square.addEventListener('click', () => {
+            console.log(botSquareArray.indexOf(square))
+        })
+    })
     console.log(player, bot)
 }
